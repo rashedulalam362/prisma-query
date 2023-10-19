@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// model user{
+//   id Int @id @default(autoincrement())
+//   firstName String @db.VarChar(50)
+//   middleName String @db.VarChar(50)
+//   lastName String @db.VarChar(30)
+//   mobile String @db.VarChar(30)
+//   email String @db.VarChar(30)
+//   passwordHash String @db.VarChar(30)
+//   registeredAt DateTime @default(now()) @db.Timestamp(0)
+//   createAt DateTime @default(now()) @db.Timestamp(0)
+//   updateAt DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+//   product product ?
+// }
+
+// model product{
+// id BigInt @id @default(autoincrement())
+//  firstName String @db.VarChar(50)
+//  metaTile String  @db.VarChar(23)
+//  slug String  @db.VarChar(23)
+//  summary String @db.VarChar(50)
+//  price Int 
+//  discount Int
+//  userId BigInt @unique
+//  user user @relation(fields: [userId],references: [id],onDelete: Restrict,onUpdate: Cascade)
+// createAt DateTime @default(now()) @db.Timestamp(0)
+// updateAt DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+// }
+
+model user {
+  id BigInt @id @default(autoincrement())
+  firstName String @db.VarChar(50)
+  middleName String @db.VarChar(50)
+  lastName String @db.VarChar(30)
+  mobile String @db.VarChar(30)
+  email String @db.VarChar(30)
+  passwordHash String @db.VarChar(30)
+  registeredAt DateTime @default(now()) @db.Timestamp(0)
+  createAt DateTime @default(now()) @db.Timestamp(0)
+  updateAt DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  product product []
+  order order []
+}
+
+model product {
+  id BigInt @id @default(autoincrement())
+  name String @db.VarChar(50)
+  metaTile String @db.VarChar(23)
+  slug String @db.VarChar(23)
+  summary String @db.VarChar(50)
+  price Int
+  discount Int
+  userId BigInt 
+  user user @relation(fields: [userId],references: [id],onDelete: Restrict,onUpdate:Cascade)
+  createAt DateTime @default(now()) @db.Timestamp(0)
+  updateAt DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  product_meta product_meta []
+  product_reivew product_reivew []
+}
+
+model product_meta{
+  id BigInt @id @default(autoincrement())
+  key String @db.VarChar(20)
+  content String @db.VarChar(20)
+  productId BigInt
+  product product @relation(fields: [productId],references: [id],onDelete: Restrict,onUpdate: Cascade) 
+  createAt DateTime @default(now()) @db.Timestamp(0)
+  updateAt DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  
+
+}
+
+model product_reivew{
+id BigInt @id @default(autoincrement())
+title String @db.VarChar(40)
+rating String @db.VarChar(20)
+content String @db.VarChar(30)
+prodcutId BigInt
+product product @relation(fields: [prodcutId],references: [id],onDelete: Restrict,onUpdate: Cascade) 
+ createAt DateTime @default(now()) @db.Timestamp(0)
+ updateAt DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+}
+
+model order{
+  id BigInt @id @default(autoincrement())
+  title String @db.VarChar(40)
+  token String @db.VarChar(30)
+  subTotal Int 
+  tax Int
+  discount Int
+  grandTotal Int
+  firstName String @db.VarChar(50)
+  middleName String @db.VarChar(50)
+  lastName String @db.VarChar(30)
+  mobile String @db.VarChar(30)
+  email String @db.VarChar(30)
+  city String
+  country String
+  userId BigInt
+  user user @relation(fields: [userId],references: [id],onDelete: Restrict,onUpdate: Cascade)
+   createAt DateTime @default(now()) @db.Timestamp(0)
+ updateAt DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+}
+
